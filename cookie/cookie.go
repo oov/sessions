@@ -101,6 +101,12 @@ func (c *context) Save(session *sessions.Session) error {
 // Destroy deletes the Session with the given name by issuing an expired
 // session cookie with the same name.
 func (c *context) Destroy(name string) error {
-	c.Store.write(c.Context, name, "", &Config{MaxAge: -1, Path: c.Store.Config.Path})
+	c.Store.write(c.Context, name, "", &Config{
+		MaxAge:   -1,
+		Path:     c.Store.Config.Path,
+		Domain:   c.Store.Config.Domain,
+		HTTPOnly: c.Store.Config.HTTPOnly,
+		Secure:   c.Store.Config.Secure,
+	})
 	return nil
 }
