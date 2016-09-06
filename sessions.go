@@ -5,6 +5,7 @@ package sessions
 type Store interface {
 	New(name string) *Session
 	Get(name string) (*Session, error)
+	GetOrNew(name string) (*Session, error)
 	Save(session *Session) error
 	Destroy(name string) error
 }

@@ -1,6 +1,8 @@
 package cookie
 
 import (
+	"net/http"
+
 	"github.com/gorilla/securecookie"
 	"github.com/oov/sessions"
 )
@@ -87,6 +89,16 @@ func (c *context) Get(name string) (*sessions.Session, error) {
 	session := c.New(name)
 	err = securecookie.DecodeMulti(name, cookie, &session.Values, c.Store.Codecs...)
 	return session, err
+}
+
+// GetOrNew returns a Session with the requested name and the store's config
+// value. If cookie can be found from the context, returns it.
+func (c *context) GetOrNew(name string) (*sessions.Session, error) {
+	sess, err := c.Get(name)
+	if err == http.ErrNoCookie {
+		return c.New(name), nil
+	}
+	return sess, err
 }
 
 // Save adds or updates the Session on the response via a signed and optionally
