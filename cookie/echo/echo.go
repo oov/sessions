@@ -1,6 +1,7 @@
 package echo
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/labstack/echo"
@@ -23,6 +24,9 @@ func getContext(c []interface{}) echo.Context {
 func read(c []interface{}, name string) (string, error) {
 	cookie, err := getContext(c).Cookie(name)
 	if err != nil {
+		if err == echo.ErrCookieNotFound {
+			return "", http.ErrNoCookie
+		}
 		return "", err
 	}
 	return cookie.Value(), nil

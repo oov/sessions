@@ -21,7 +21,10 @@ type Config struct {
 }
 
 type (
-	ReadFunc  func(c []interface{}, name string) (string, error)
+	// ReadFunc is callback function that read cookie data.
+	// If not found, you must return http.ErrNoCookie.
+	ReadFunc func(c []interface{}, name string) (string, error)
+	// WriteFunc is callback function that write cookie data.
 	WriteFunc func(c []interface{}, name, value string, cfg *Config) error
 )
 
