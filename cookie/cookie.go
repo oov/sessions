@@ -38,7 +38,7 @@ type Store struct {
 
 // NewStore returns a new Store which signs and optionally encrypts
 // session cookies.
-func NewStore(Read ReadFunc, Write WriteFunc, keyPairs ...[]byte) *Store {
+func NewStore(read ReadFunc, write WriteFunc, keyPairs ...[]byte) *Store {
 	return &Store{
 		Codecs: securecookie.CodecsFromPairs(keyPairs...),
 		Config: &Config{
@@ -46,8 +46,8 @@ func NewStore(Read ReadFunc, Write WriteFunc, keyPairs ...[]byte) *Store {
 			MaxAge:   3600 * 24 * 7, // 1 week
 			HTTPOnly: true,
 		},
-		read:  Read,
-		write: Write,
+		read:  read,
+		write: write,
 	}
 }
 
